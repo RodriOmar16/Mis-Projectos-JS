@@ -114,10 +114,12 @@ formulario.addEventListener("submit", (e) => {
   const datos                       = new FormData(formulario);
   const [nombre, edad, dni, opcion] = [...datos.values()];
   const alerta                      = document.querySelector('.alert-danger')
-  if(!nombre || !edad || !dni || !opcion){
+  
+  if(!nombre.trim() || !edad.trim() || !dni || opcion == 'Selecciona una opción'){
     alerta.className = 'alert alert-danger'
     return
   }else alerta.className = 'alert alert-danger d-none'
+  
   if(opcion === 'estudiante'){
     const estudiante = new Estudiante(nombre, edad, dni);
     
