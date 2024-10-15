@@ -73,7 +73,6 @@ class Estudiante extends Persona{
     clone.querySelector(".lead").textContent            = this.edad;
 
     if(typeof this.#estado != 'string'){
-      console.log("fue al si.");
       if(this.#estado){
         clone.querySelector('.badge').className       = "badge bg-success";
         clone.querySelector('.btn-success').disabled  = true;
@@ -112,9 +111,13 @@ class Profesor extends Persona{
 
 formulario.addEventListener("submit", (e) => {
   e.preventDefault();
-  const datos                  = new FormData(formulario);
+  const datos                       = new FormData(formulario);
   const [nombre, edad, dni, opcion] = [...datos.values()];
-
+  const alerta                      = document.querySelector('.alert-danger')
+  if(!nombre || !edad || !dni || !opcion){
+    alerta.className = 'alert alert-danger'
+    return
+  }else alerta.className = 'alert alert-danger d-none'
   if(opcion === 'estudiante'){
     const estudiante = new Estudiante(nombre, edad, dni);
     
@@ -144,9 +147,7 @@ formulario.addEventListener("submit", (e) => {
 
 document.addEventListener("click", e => {
   if(e.target.dataset.legajo){
-    console.log("entro al if del CLICK");
     if(e.target.matches('.btn-success')){
-      console.log("entro al success");
       estudiantes.map(elem => {
         if(elem.legajo == e.target.dataset.legajo){
           elem.setEstado = true;
@@ -156,7 +157,6 @@ document.addEventListener("click", e => {
     }
 
     if(e.target.matches('.btn-danger')){
-      console.log("entro al danger");
       estudiantes.map(elem => {
         if(elem.legajo == e.target.dataset.legajo){
           elem.setEstado = false;
@@ -165,5 +165,5 @@ document.addEventListener("click", e => {
       })
     }
     Persona.pintarPersonaUI(estudiantes, "estudiante");
-  }else console.log("entro al else del CLICK");
+  }
 })
