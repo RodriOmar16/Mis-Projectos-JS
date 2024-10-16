@@ -14,7 +14,22 @@ const agregarNota = (nombre) => {
   });
 }
 
+function editarNota(pos){
+  posicion = pos;
+  const nota = todos[pos];
+  formulario.querySelector("input").value = nota.nombre;
+  formulario.querySelector("button").textContent = 'Guardar Cambios';
+  editar = true;
+}
+function guardarCambios(notaNva){
+  todos[posicion].nombre = notaNva;
+  formulario.querySelector("button").textContent = 'Agregar';
+  editar = false;
+}
+
 function pintarNotas(){
+  localStorage.setItem('notas', JSON.stringify(todos));
+  
   pintarTodo.textContent = ''; //se limpia todo todo irá
   const fragment = document.createDocumentFragment();
 
@@ -29,19 +44,7 @@ function pintarNotas(){
   pintarTodo.appendChild(fragment);
 }
 
-function editarNota(pos){
-  posicion = pos;
-  const nota = todos[pos];
-  formulario.querySelector("input").value = nota.nombre;
-  formulario.querySelector("button").textContent = 'Guardar Cambios';
-  editar = true;
-}
-function guardarCambios(notaNva){
-  todos[posicion].nombre = notaNva;
-  formulario.querySelector("button").textContent = 'Agregar';
-  editar = false;
-}
-
+//formulario
 formulario.addEventListener("submit", async e => {
   e.preventDefault();
   const data   = new FormData(formulario);
@@ -61,7 +64,7 @@ formulario.addEventListener("submit", async e => {
   pintarNotas();
   formulario.querySelector("input").value = '';
 })
-
+//delegacion de eventos
 document.addEventListener("click", e => {
   if(e.target.dataset.id){
     if(e.target.matches('#borrar')){
@@ -74,4 +77,10 @@ document.addEventListener("click", e => {
       editarNota(pos);
     }
   }
+});
+
+//carga primero el dom y luego hace esto
+document.addEventListener('DOMContentLoaded', (e) => {
+  todos = localStorage.getItem('notas') ? JSON.parse(localStorage.getItem('notas')) : [];
+  pintarNotas();
 });
