@@ -7,6 +7,25 @@
   <title>Document</title>
 </head>
 <body>
+  <div class="container my-5">
+    <h1>Todo App</h1>
+    <div class="alert alert-danger d-none">No es posible agregar notas vacías</div>
+    <form id="formulario">
+     <input type="text" placeholder="Escribe algo aquí..." name="nombre" class="form-control mb-2"/>
+     <button class="btn btn-primary w-100" type="submit">Agregar</button>
+    </form>
+    <section id="pintarTodo" class="mt-3"></section>
+  </div>
+
+  <template id="templateTodo">
+    <article class="alert alert-warning d-flex justify-content-between">
+      <p class="lead pe-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, maiores. Voluptatem provident incidunt facilis veritatis? A facilis minima molestias soluta, placeat error delectus quaerat earum ipsum beatae quos reiciendis at!</p>
+      <div class="d-flex align-items-center">
+        <button class="btn btn-danger">Borrar</button>
+      </div>
+    </article>
+  </template>
+
   <script src="main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
