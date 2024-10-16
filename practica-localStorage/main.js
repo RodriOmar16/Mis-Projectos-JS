@@ -3,6 +3,8 @@ const pintarTodo   = document.querySelector("#pintarTodo");
 const templateTodo = document.querySelector("#templateTodo").content;
 let todos          = [];
 let idNota         = 0;
+let editar         = false;
+let posicion       = 0;
 
 const agregarNota = (nombre) => {
   idNota++;
@@ -19,11 +21,25 @@ function pintarNotas(){
   todos.forEach(e => {
     const clone = templateTodo.cloneNode(true);
     clone.querySelector("p").textContent     = e.nombre;
-    clone.querySelector("button").dataset.id = e.id;
+    clone.querySelector("#borrar").dataset.id = e.id;
+    clone.querySelector("#editar").dataset.id = e.id;
     fragment.append(clone);
   });
 
   pintarTodo.appendChild(fragment);
+}
+
+function editarNota(pos){
+  posicion = pos;
+  const nota = todos[pos];
+  formulario.querySelector("input").value = nota.nombre;
+  formulario.querySelector("button").textContent = 'Guardar Cambios';
+  editar = true;
+}
+function guardarCambios(notaNva){
+  todos[posicion].nombre = notaNva;
+  formulario.querySelector("button").textContent = 'Agregar';
+  editar = false;
 }
 
 formulario.addEventListener("submit", async e => {
@@ -37,16 +53,25 @@ formulario.addEventListener("submit", async e => {
     return 
   }else alerta.className = 'alert alert-danger d-none';
 
-  agregarNota(todo);
+  if(!editar){ 
+    agregarNota(todo);
+  }else{
+    guardarCambios(todo)
+  }
   pintarNotas();
-
   formulario.querySelector("input").value = '';
 })
 
 document.addEventListener("click", e => {
   if(e.target.dataset.id){
-    const pos = todos.map(e => e.id).indexOf(parseInt(e.target.dataset.id))
-    todos.splice(pos,1);
-    pintarNotas();
+    if(e.target.matches('#borrar')){
+      const pos = todos.map(e => e.id).indexOf(parseInt(e.target.dataset.id))
+      todos.splice(pos,1);
+      pintarNotas();
+    }
+    if(e.target.matches('#editar')){
+      const pos = todos.map(e => e.id).indexOf(parseInt(e.target.dataset.id))
+      editarNota(pos);
+    }
   }
 });
